@@ -70,3 +70,48 @@ loadUnitsByBatch <- function(db, cdfFile, batch_size=10000,
 }
 
 
+loadAffyCsv <- function(db, csvFile, batch_size=5000) {
+    csvFile <- "AffyMapping500k-data/Mapping250K_Nsp_annot.csv"
+    con <- file(csvFile, open="r")
+    on.exit(close(con))
+
+    wantedCols <- c(1,2,3,4,7,8,12,13)
+    colClasses <- rep("character", 26)
+    colClasses[c(2, 7)] <- "integer"
+    df <- read.table(con, sep=",", stringsAsFactors=FALSE, nrows=10,
+                     na.strings="---", colClasses=colClasses,
+                     header=TRUE)[, wantedCols]
+    header <- gsub(".", "_", names(df), fixed=TRUE)
+    
+    db_cols <- c("affy_snp_ip", "dbsnp_rs_id", "chrom",
+                 "phsyical_pos", "strand", "allele_a", "allele_b")
+    
+    val_holders <- c(":AFFY_SNP_ID", ":dbSNP_RS_ID", ":Chromosome",
+                     ":Physical_position", ":Strand", ":Allele_a",
+                     ":Allele_b")
+
+    exprs <- paste(db_cols, " = '", val_holders, "'", sep="", collapse=", ")
+    sql <- paste("update featureSet set ", exprs,
+                 "where man_fsetid = ':Probe_Set_ID'")
+
+    dbBeginTransaction(db)
+    dbGetQuery(db, sql, bind.data=df)
+    dbCommit(db)
+
+    ## Now do the rest in batches
+    done <- FALSE
+    while (!done) {
+        df <- read.table(con, sep=",", stringsAsFactors=FALSE,
+                         nrows=batch_size, na.strings="---",
+                         colClasses=colClasses, header=FALSE)[, wantedCols]
+        if (nrow(df) < batch_size) {
+            done <- TRUE
+            if (nrow(df) == 0)
+              break
+        }
+        names(df) <- header
+        dbBeginTransaction(db)
+        dbGetQuery(db, sql, bind.data=df)
+        dbCommit(db)
+    }
+}
