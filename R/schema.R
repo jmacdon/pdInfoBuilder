@@ -13,7 +13,7 @@ create table featureSet (
     affy_snp_id integer,
     dbsnp_rs_id text,
     chrom text,
-    phsyical_pos integer,
+    physical_pos integer,
     strand integer,
     allele_a text,
     allele_b text,
