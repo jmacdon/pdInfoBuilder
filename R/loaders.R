@@ -76,11 +76,8 @@ loadAffyCsv <- function(db, csvFile, batch_size=5000) {
     on.exit(close(con))
 
     wantedCols <- c(1,2,3,4,7,8,12,13)
-    colClasses <- rep("character", 26)
-    colClasses[c(2, 7)] <- "integer"
     df <- read.table(con, sep=",", stringsAsFactors=FALSE, nrows=10,
-                     na.strings="---", colClasses=colClasses,
-                     header=TRUE)[, wantedCols]
+                     na.strings="---", header=TRUE)[, wantedCols]
     header <- gsub(".", "_", names(df), fixed=TRUE)
     
     db_cols <- c("affy_snp_ip", "dbsnp_rs_id", "chrom",
@@ -103,7 +100,7 @@ loadAffyCsv <- function(db, csvFile, batch_size=5000) {
     while (!done) {
         df <- read.table(con, sep=",", stringsAsFactors=FALSE,
                          nrows=batch_size, na.strings="---",
-                         colClasses=colClasses, header=FALSE)[, wantedCols]
+                         header=FALSE)[, wantedCols]
         if (nrow(df) < batch_size) {
             done <- TRUE
             if (nrow(df) == 0)
