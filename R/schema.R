@@ -10,7 +10,7 @@ createFeatureSetSql <- ('
 create table featureSet (
     fsetid integer primary key not null,
     man_fsetid text,
-    affy_snp_ip integer,
+    affy_snp_id integer,
     dbsnp_rs_id text,
     chrom text,
     phsyical_pos integer,
