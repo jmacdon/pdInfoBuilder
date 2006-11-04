@@ -83,13 +83,13 @@ loadAffyCsv <- function(db, csvFile, batch_size=5000) {
     db_cols <- c("affy_snp_ip", "dbsnp_rs_id", "chrom",
                  "phsyical_pos", "strand", "allele_a", "allele_b")
     
-    val_holders <- c(":AFFY_SNP_ID", ":dbSNP_RS_ID", ":Chromosome",
+    val_holders <- c(":Affy_SNP_ID", ":dbSNP_RS_ID", ":Chromosome",
                      ":Physical_position", ":Strand", ":Allele_a",
                      ":Allele_b")
 
-    exprs <- paste(db_cols, " = '", val_holders, "'", sep="", collapse=", ")
+    exprs <- paste(db_cols, " = ", val_holders, sep="", collapse=", ")
     sql <- paste("update featureSet set ", exprs,
-                 "where man_fsetid = ':Probe_Set_ID'")
+                 "where man_fsetid = :Probe_Set_ID")
 
     dbBeginTransaction(db)
     dbGetQuery(db, sql, bind.data=df)
