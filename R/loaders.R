@@ -71,7 +71,6 @@ loadUnitsByBatch <- function(db, cdfFile, batch_size=10000,
 
 
 loadAffyCsv <- function(db, csvFile, batch_size=5000) {
-    csvFile <- "AffyMapping500k-data/Mapping250K_Nsp_annot.csv"
     con <- file(csvFile, open="r")
     on.exit(close(con))
 
@@ -79,13 +78,14 @@ loadAffyCsv <- function(db, csvFile, batch_size=5000) {
     df <- read.table(con, sep=",", stringsAsFactors=FALSE, nrows=10,
                      na.strings="---", header=TRUE)[, wantedCols]
     header <- gsub(".", "_", names(df), fixed=TRUE)
+    names(df) <- header
     
     db_cols <- c("affy_snp_ip", "dbsnp_rs_id", "chrom",
                  "phsyical_pos", "strand", "allele_a", "allele_b")
     
     val_holders <- c(":Affy_SNP_ID", ":dbSNP_RS_ID", ":Chromosome",
-                     ":Physical_position", ":Strand", ":Allele_a",
-                     ":Allele_b")
+                     ":Physical_Position", ":Strand", ":Allele_A",
+                     ":Allele_B")
 
     exprs <- paste(db_cols, " = ", val_holders, sep="", collapse=", ")
     sql <- paste("update featureSet set ", exprs,
