@@ -5,7 +5,7 @@ loadUnitNames <- function(db, unames) {
     df <- data.frame(id=rep(as.integer(NA), length(unames)), name=unames)
     values <- "(:id, :name)"
     sql <- "insert into featureSet (fsetid, man_fsetid) values"
-    dbGetQuery(db, paste(sql, values), bind.data=df)
+    dbGetPreparedQuery(db, paste(sql, values), bind.data=df)
     dbCommit(db)
 }
 
@@ -92,7 +92,7 @@ loadAffyCsv <- function(db, csvFile, batch_size=5000) {
                  "where man_fsetid = :Probe_Set_ID")
 
     dbBeginTransaction(db)
-    dbGetQuery(db, sql, bind.data=df)
+    dbGetPreparedQuery(db, sql, bind.data=df)
     dbCommit(db)
 
     ## Now do the rest in batches
@@ -108,7 +108,7 @@ loadAffyCsv <- function(db, csvFile, batch_size=5000) {
         }
         names(df) <- header
         dbBeginTransaction(db)
-        dbGetQuery(db, sql, bind.data=df)
+        dbGetPreparedQuery(db, sql, bind.data=df)
         dbCommit(db)
     }
 }
