@@ -80,8 +80,8 @@ loadAffyCsv <- function(db, csvFile, batch_size=5000) {
     header <- gsub(".", "_", names(df), fixed=TRUE)
     names(df) <- header
     
-    db_cols <- c("affy_snp_ip", "dbsnp_rs_id", "chrom",
-                 "phsyical_pos", "strand", "allele_a", "allele_b")
+    db_cols <- c("affy_snp_id", "dbsnp_rs_id", "chrom",
+                 "physical_pos", "strand", "allele_a", "allele_b")
     
     val_holders <- c(":Affy_SNP_ID", ":dbSNP_RS_ID", ":Chromosome",
                      ":Physical_Position", ":Strand", ":Allele_A",
