@@ -1,16 +1,19 @@
 initDb <- function(dbname) {
     db <- dbConnect(dbDriver("SQLite"), dbname)
+
+    ## Set page size
+    dbGetQuery(db, setPageSizeSql)
     
     ## Create tables
-    rset <- dbSendQuery(db, createFeatureSetSql)
-    dbClearResult(rset)
+    dbGetQuery(db, createFeatureSetSql)
     
-    rset <- dbSendQuery(db, sprintf(createFeatureSql, "pmfeature"))
-    dbClearResult(rset)
+    dbGetQuery(db, sprintf(createFeatureSql, "pmfeature"))
     
-    rset <- dbSendQuery(db, sprintf(createFeatureSql, "mmfeature"))
-    dbClearResult(rset)
+    dbGetQuery(db, sprintf(createFeatureSql, "mmfeature"))
 
+    ## Create index
+    ## NOTE: might be more efficient to create this after loading,
+    ## but current perf is ok.
     sql <- 'create index man_fsetid_idx on featureSet ("man_fsetid")'
     dbGetQuery(db, sql)
     db
