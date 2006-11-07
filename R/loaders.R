@@ -112,3 +112,10 @@ loadAffyCsv <- function(db, csvFile, batch_size=5000) {
         dbCommit(db)
     }
 }
+
+
+buildPdInfoDb <- function(cdfFile, csvFile, dbFile) {
+    db <- initDb(dbFile)
+    loadUnitsByBatch(db, cdfFile)
+    loadAffyCsv(db, csvFile)
+}
