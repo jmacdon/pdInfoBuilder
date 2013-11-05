@@ -1,0 +1,26 @@
+useDynLib("pdInfoBuilder")
+
+import("methods")
+import("Biobase")
+
+importFrom("Biostrings", "DNAStringSet")
+importFrom("IRanges", "DataFrame")
+
+exportClasses(
+              "AffyExpressionPDInfoPkgSeed",
+              "AffyTilingPDInfoPkgSeed",
+              "AffySNPPDInfoPkgSeed",
+              "AffySNPPDInfoPkgSeed2",
+              "AffySNPCNVPDInfoPkgSeed",
+              "AffySNPCNVPDInfoPkgSeed2",
+              "AffyExonPDInfoPkgSeed",
+              "AffyGenePDInfoPkgSeed",
+              "NgsExpressionPDInfoPkgSeed",
+              "NgsTilingPDInfoPkgSeed"
+              )
+
+exportMethods(
+              "chipName",
+              "getGeometry",
+              "makePdInfoPackage"
+              )

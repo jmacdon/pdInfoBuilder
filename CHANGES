@@ -1,0 +1,136 @@
+### CHANGE log for package pdInfoBuilder ###
+BC: 12/12/08
+Updates featureSet table from POS file (NGS)
+
+Changes made by Matt Settles 12-8-08
+moved closeDb function from many instances in XinitDb.R to one instance in utils.R
+added connectDb function in utils.R
+changed getGeometry to return a list with nrow and ncols instead of character nrows;ncols
+updated man pages 
+more work on Affy Tiling and ST arrays
+
+Changes made by Matt Settles 12-4-2008
+
+** All changes should generally have effect on only Affy Tiling, ST and expression arrays.
+Changes made that effect, but not break, all objects
+	moved url from PkgSeed to PDInfoPkgSeed
+	added organism and species to PDINfoPkgSeed, default provided
+Changes currently isolated to Affy tiling and ST and expression arrays
+	added new generic function getGeometry
+	added utils file, contains some general functions
+	modifed chipName function for affy tiling and affy st arrays
+	moved affy tiling cif file to cel file, may change back, in general the cif file appears to contain no relevant information
+	added new pdInfo.PKG.template folde inst, I'm trying something out
+	modified package building proceedures for tiling, st and expression arrays
+	
+Changes by BC in Feb-Mar 2009
+
+** Added new builders for NGS Tiling and Affy Exon. These builders use the minimum of "gene-centric" annotation and should be able to link to org pkgs to extract more info.
+
+03-08-09 - Benilton Carvalho
+
+** In the new builder (v2) for Exon arrays, added a statement to remove probes that are not in the probeset.csv file.
+
+03-09-09 - BC
+
+** Added support to Gene ST arrays. Because these share *much* of the Exon arrays structure, I reused most of the code by adding the 'geneArray' argument to the relevant functions (parsers/builder)
+
+03-17-09 - BC - Committed version  1.7.13
+
+** Added support to HT Expression arrays. The same structure is expected to serve to regular Affymetrix Expression arrays as well
+
+** Several unused functions and structures were removed.
+
+03-19-09 - BC - Committed version 1.7.14
+
+** Added diagnostic messages.
+
+** Added vignette explaining how to build packages for several array types. (v 1.7.15)
+
+03-24-09 - BC - Committed version 1.7.19
+
+** Removed dbImport.AffyHuExArrayAnnCSV.R
+
+** Moved contents of affy*R and ngs*R to toBeRemoved.R. The revamped versions of the builders are more robust and minimize the use of gene-centric annotation.
+
+** Exported only classes that are used to build packages
+
+03-25-2009 - B Carvalho
+
+** Implemented changes mainly to templates, so pacakges pass R CMD check.
+
+** Added slot annotation to PDInfo, so we can easily find any information about the object.
+
+03-26-2009 - B Carvalho
+
+** Added indices
+
+04-02-2009 - B Carvalho
+
+** Added SNP/CNV array
+
+** Added increaseDbPerformance(conn)
+
+04-07-2009 - B Carvalho
+
+** Added warnings in case the user builds a package for a Human SNP Chip. These are available from BioConductor and do support CRLMM, the ones built here do *NOT* support CRLMM.
+
+** Updated vignette
+
+04-16-2009 - B Carvalho
+
+** Fixed the builder for non human tiling arrays
+
+04-24-2009 - B Carvalho
+
+** Sorted *Sequence.rda files by 'fid'
+
+04-29-2009 - B Carvalho
+
+** Fixed merging of NDF and POS files (NimbleGen Tiling Arrays)
+
+05-14-2009 - B Carvalho
+
+** Fixed problem with chipName for NimbleGen arrays. Improved the regular expression to find specifically "\\.ndf$"
+
+** Removed requirement of ALLELE in probe sequence file for Affy SNP chips
+
+10-13-2009 - B Carvalho
+
+** Updated loaders, because the annotation files' format changed, once more (all SNP platforms)
+
+** Updated dependencies on both pdInfoBuilder and template
+
+** Updated NAMESPACE - template
+
+02-08-2010 - B Carvalho
+
+(1.11.3) added if (length(controls)>0) in builder for NGS Expression
+
+03-01-2010 - B Carvalho
+
+(1.11.5) removed unused C code
+(1.11.4) moved probes from bg to pmfeature table on exon/gene arrays
+
+03-04-2010 - B Carvalho
+
+(1.11.6) fixed format of NEWS
+         fixed docs for sequence on template
+         fixed affy expression ht
+
+03-26-2010 - B Carvalho
+
+(1.11.7) Added C code back (used old SNP chips)
+
+04-06-2010 - B Carvalho
+
+(1.11.8) Parser for tab seq file (Affymetrix) has a converter for IUPAC codes
+         for the case [X/Y] -> Z (SNPs)
+
+(1.11.9) Replaced cat() by message()/simpleMessage()
+
+(1.11.10) Added checkFields function
+
+(1.11.11) changed way to read NDF
+
+(1.11.12) moved CONTAINER in NimbleGen Tiling from featureSet to (pm/bg)feature table

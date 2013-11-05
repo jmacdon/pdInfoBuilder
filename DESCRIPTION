@@ -1,0 +1,43 @@
+Package: pdInfoBuilder
+Title: Platform Design Information Package Builder
+Description: Builds platform design information packages.
+  These consist of a SQLite database containing feature-level
+  data such as x, y position on chip and
+  featureSet ID. The database also incorporates featureSet-level
+  annotation data. The products of this packages are used by the oligo pkg.
+Version: 1.27.2
+Author: Seth Falcon, Benilton Carvalho with contributions by Vince Carey, Matt Settles and Kristof de Beuf
+Maintainer: Benilton Carvalho <Benilton.Carvalho@cancer.org.uk>
+LazyLoad: yes
+Depends: R (>= 2.15.0),
+         methods,
+         Biobase (>= 2.17.7),
+         RSQLite (>= 0.11.1),
+         affxparser (>= 1.29.12),
+         oligo (>= 1.21.5)
+Imports: Biostrings (>= 2.25.12),
+         IRanges (>= 1.15.44)
+License: Artistic-2.0
+Collate: AllClasses.R
+         AllGenerics.R
+         initialize-methods.R
+         utils.R
+         schema.R
+         initDb.R
+         initDb.snp6.R
+         pmmmBlockToMat.R
+         loaders.R
+         loaders.snp6.R
+         makePdInfoPackage-methods.R
+         chipName-methods.R
+         getGeometry-methods.R
+         pdBuilderV2TiledRegion.R
+         pdBuilderV2ExonTranscription.R
+         pdBuilderV2Gene.R
+         pdBuilderV2AffyTiling.R
+         pdBuilderV2NgsExpression.R
+         pdBuilderV2AffyExpressionHT.R
+         pdBuilderV2AffySNP.R
+         pdBuilderV2AffySNPCNV.R
+         pdBuilderV2miRNA.R
+biocViews: Annotation, Infrastructure
