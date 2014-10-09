@@ -95,15 +95,12 @@ setMethod("makePdInfoPackage", "AffyMiRNAPDInfoPkgSeed",
                           "pmfeature",
                           genePmFeatureSchema[["col2type"]],
                           genePmFeatureSchema[["col2key"]])
-            
-            containsMm <- nrow(parsedData[["mmFeatures"]]) > 0
-            if (containsMm)
-                dbCreateTable(conn,
-                              "mmfeature",
-                              genePmFeatureSchema[["col2type"]],
-                              genePmFeatureSchema[["col2key"]])
+
+            dbCreateTable(conn,
+                          "mmfeature",
+                          genePmFeatureSchema[["col2type"]],
+                          genePmFeatureSchema[["col2key"]])
             ## end creating tables
-            
 
             ## Inserting data in new tables
             dbInsertDataFrame(conn, "type_dict", parsedData[["type_dict"]],
@@ -113,21 +110,14 @@ setMethod("makePdInfoPackage", "AffyMiRNAPDInfoPkgSeed",
                               miRNAFeatureSetSchema[["col2type"]], !quiet)
             dbInsertDataFrame(conn, "pmfeature", parsedData[["pmFeatures"]],
                               genePmFeatureSchema[["col2type"]], !quiet)
-            if (containsMm)
-                dbInsertDataFrame(conn, "mmfeature", parsedData[["mmFeatures"]],
-                                  genePmFeatureSchema[["col2type"]], !quiet)
+            dbInsertDataFrame(conn, "mmfeature", parsedData[["mmFeatures"]],
+                              genePmFeatureSchema[["col2type"]], !quiet)
             ## end inserting
 
             dbCreateTableInfo(conn, !quiet)
 
             ## Create indices
-            ## dbCreateIndicesPm(conn, !quiet)
-            dbCreateIndex(conn, "idx_pmfsetid", "pmfeature", "fsetid", FALSE, verbose=!quiet)
-            dbCreateIndex(conn, "idx_pmfid", "pmfeature", "fid", FALSE, verbose=!quiet)
-            if (containsMm) {
-                dbCreateIndex(conn, "idx_mmfsetid", "pmfeature", "fsetid", FALSE, verbose=!quiet)
-                dbCreateIndex(conn, "idx_mmfid", "pmfeature", "fid", FALSE, verbose=!quiet)
-            }
+            dbCreateIndicesPm(conn, !quiet)
 ##            dbCreateIndicesMm(conn, !quiet)
             dbCreateIndicesFs(conn, !quiet)
 
