@@ -35,6 +35,16 @@ setClass("PDInfoPkgSeed",
          })
 
 #################################################################
+## Generic Array
+#################################################################
+setClass("GenericPDInfoPkgSeed",
+         contains="PDInfoPkgSeed",
+         representation=representation(
+             table='data.frame',
+             pkgName='character'
+             ))
+
+#################################################################
 ## Manufacturer-specific classes: Affymetrix and NimbleGen are
 ## supported for the moment
 #################################################################
